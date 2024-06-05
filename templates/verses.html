@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+
+
+<div class="container">
+    <div class="row mt-5">
+        <h1 class="primary-heading">
+            Beautiful Verses
+        </h1>
+    </div>
+</div>
+
+<div class="container audios-wrapper">
+    <form id="filterForm" method="get" class="row d-flex justify-content-start flex-row mb-2" action="{% url 'verses' %}">
+        {% if not gender or gender == 'all' %}
+        <div class="input col-1">
+            <input checked type="radio" name="classi" id="all" value="all">
+            <label for="all">All</label>
+        </div>
+        <div class="input col-1">
+            <input type="radio" value="male" name="classi" id="male">
+            <label for="male">Male</label>
+        </div>
+        <div class="input col-1">
+            <input type="radio" value="female" name="classi" id="female">
+            <label for="female">Female</label>
+        </div>
+        {% endif %}
+        {% if gender == 'male' %}
+        <div class="input col-1">
+            <input type="radio" name="classi" id="all" value="all">
+            <label for="all">All</label>
+        </div>
+        <div class="input col-1">
+            <input checked type="radio" value="male" name="classi" id="male">
+            <label for="male">Male</label>
+        </div>
+        <div class="input col-1">
+            <input type="radio" value="female" name="classi" id="female">
+            <label for="female">Female</label>
+        </div>
+        {% endif %}
+        {% if gender == 'female' %}
+        <div class="input col-1">
+            <input type="radio" name="classi" id="all" value="all">
+            <label for="all">All</label>
+        </div>
+        <div class="input col-1">
+            <input type="radio" value="male" name="classi" id="male">
+            <label for="male">Male</label>
+        </div>
+        <div class="input col-1">
+            <input checked type="radio" value="female" name="classi" id="female">
+            <label for="female">Female</label>
+        </div>
+        {% endif %}
+    </form>
+    
+    <div class="row">
+        <table class="table header-bg align-middle mb-0 bg-white">
+            <thead class="">
+              <tr class="header-bg">
+                 <th>#</th>
+                <th>Verse(s) Title</th>
+                <th>Reciter</th>
+                <th>Length</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for audio in audios %}
+              <tr class="audio" id="{{audio.id}}">
+                  <td>
+                    {{ forloop.counter }}
+                    </td>
+                  <td>
+                      <a href="{% url 'listen' %}?audio_que={{audio.title}}" class="fw-normal verse-title mb-1">{{audio.title}}</a>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img
+                            src="{{audio.reciter.img.url}}"
+                            alt=""
+                            style="width: 45px; height: 45px"
+                            class="rounded-circle"
+                            />
+                        <div class="ms-3">
+                          <p class="fw-bold mb-1">{{audio.reciter.name}}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ audio.get_duration|format_duration }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    <div class="row mt-5 d-flex flex-row justify-content-center align-items-center">
+        <nav aria-label="Page navigation example" style="width: fit-content;">
+            <ul class="pagination">
+                {% if audios.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ audios.previous_page_number }}">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for num in audios.paginator.page_range %}
+                    {% if audios.number == num %}
+                        <li class="page-item active">
+                            <a class="page-link" href="#">{{ num }}</a>
+                        </li>
+                    {% elif num > audios.number|add:'-5' and num < audios.number|add:'5' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if audios.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ audios.next_page_number }}">Next</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+<div class="audio-player">
+    <div id="hide-show" class="hide-show-btn">
+        <i class="fa-solid fa-eye-slash"></i>
+    </div>
+    <span class="name">
+        Ayat Ul Kursi
+    </span>
+    <audio id="my-audio-player" controls>
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+
+
+<script id="handle-audio-player">
+
+    let audioHideShowBtn = document.getElementById('hide-show');
+    let audioPlayer = document.querySelector('.audio-player');
+    let showing = true;
+
+    audioHideShowBtn.addEventListener("click", e => {
+        if (showing === true) {
+            e.preventDefault();
+            audioPlayer.style.bottom = '-80px';
+            audioHideShowBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            showing = false;
+        } else if(showing === false) {
+            audioPlayer.style.bottom = '0px';
+            audioHideShowBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            showing = true;
+        }
+    });
+
+    let allAudios = document.querySelectorAll('.audio');
+
+    allAudios.forEach(audio => {
+        audio.addEventListener("click", async e => {
+            e.preventDefault();            
+            const response = await fetch(`{% url 'get-audio' %}?audio_id=${audio.id}`, {
+                method:'GET',
+                headers: {
+                    'Content-Type':'application/json'
+                }
+            });
+
+            if (response.status === 200 ) {
+                const data = await response.json();
+                audioPlayer.querySelector('.name').innerText = data.audio.title;
+                const audioUrl = `${window.location.origin}/media/${data.audio.audio_file}`;
+                document.getElementById('my-audio-player').src = audioUrl;
+
+                document.getElementById('my-audio-player').load()
+                document.getElementById('my-audio-player').play()
+
+            }
+        })
+    })
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var radios = document.querySelectorAll('input[type=radio][name=classi]');
+        var form = document.getElementById('filterForm');
+    
+        radios.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                form.submit();
+            });
+        });
+    });
+    </script>
+    
+
+
+
+{% endblock %}

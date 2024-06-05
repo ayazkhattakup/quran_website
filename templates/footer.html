@@ -1,0 +1,43 @@
+{% load static %}
+
+
+<div class="footer">
+    <div class="container">
+        <div class="row d-flex justify-content-between align-items-center">
+            <div class="col-lg-2">
+                <img src="{% static 'images/logo.png' %}" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-4 links d-flex flex-row">
+                <ul style="list-style: none;">
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;"  href="{% url 'homepage' %}">HOME</a>
+                    </li>
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;"  href="#">ABOUT</a>
+                    </li>
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;"  href="#">CONTACT</a>
+                    </li>
+                </ul>
+                <ul style="list-style: none;">
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;"  href="{% url 'verses' %}">VERSES</a>
+                    </li>
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;"  href="{% url 'surahs' %}">SURAHS</a>
+                    </li>
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;" href="{% url 'reciters' %}">RECITERS</a>
+                    </li>
+                    <li>
+                        <a style="text-decoration:none;color:white; font-size: 14px;"  href="{% url 'books' %}">BOOK SHOP</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-2">
+
+                <a class="nav-link text-center donate-btn px-3" href="{% url 'donate' %}"><i class="fa-solid fa-hand-holding-heart"></i> DONATE NOW!</a>
+            </div>
+        </div>
+    </div>
+</div>

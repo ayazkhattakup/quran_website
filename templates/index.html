@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load static %}
+
+{% include 'header.html' %}
+{% load custom_filters %}
+
+
+<div class="container home-container">
+    <div class="row hero-1">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center gap-1">
+            <h1 class="primary-heading">
+                <i class="fa-solid fa-headphones"></i> Reciters!
+            </h1>
+            <span class="description">
+                Listen To Your Favorite Reciters, From Around The Globe, Now!
+            </span>
+        </div>
+        <div class="col-12 reciters mt-5 gap-5 d-flex row-cols-3 flex-row justify-content-around align-items-center flex-wrap">
+            {% for reciter in reciters %}
+            <div class="reciter col-lg-2 col mt-4 mt-lg-0">
+                <img src="{{reciter.img.url}}" alt="">
+                <div class="text-side">
+                    <h5 class="name">
+                        {{reciter.name}}
+                    </h5>
+                    <a href="{% url 'reciter' %}?reciter-id={{reciter.id}}" class="reciter-btn">Listen Now <i class="fa-solid fa-headphones"></i></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-12 d-flex flex-row mt-5 justify-content-center align-items-center">
+            <a href="{% url 'reciters' %}" class="primary-btn">More Reciters</a>
+        </div>
+    </div>
+    <div class="row hero-2 ">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center gap-1">
+            <h1 class="primary-heading">
+                <i class="fa-solid fa-book-quran"></i> Latest!
+            </h1>
+            <span class="description">
+                Listen To Your Favorite Reciters, From Around The Globe, Now!
+            </span>
+        </div>
+        <div class="col-12 mt-5 row justify-content-around">
+            <div class="col-lg-5 row d-flex flex-column col-md-6 col-sm-8 col-12">
+                <h3 class="primary-heading">
+                    Popular Verses
+                </h3>
+                {% for verse in verses %}
+                <div id="{{verse.id}}"  class="surat audio col-lg-10 col-12 mt-2">
+                    <div class="icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="title">
+                        {{verse.title}}
+                    </div>
+                    <div class="length">
+                        {{ verse.get_duration|format_duration }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-lg-5 row d-flex flex-column col-md-6 col-sm-8 col-12">
+                <h3 class="primary-heading">
+                    Popular Chapters
+                </h3>
+                {% for surah in surahs %}
+                <div id="{{surah.id}}" class="chapter audio col-lg-10 col-12 mt-2">
+                    <div class="icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="title">
+                        {{surah.title}}
+                    </div>
+                    <div class="length">
+                        {{ surah.get_duration|format_duration }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row hero-3">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center gap-1">
+            <h1 class="primary-heading">
+                <i class="fa-solid fa-store"></i> Shop Now!
+            </h1>
+            <span class="description">
+                Listen To Your Favorite Reciters, From Around The Globe, Now!
+            </span>
+        </div>
+        <div class="col-12 books mt-5 d-flex flex-row gap-3 justify-content-around align-items-center flex-wrap">
+            {% for book in books %}
+            <div class="book mt-sm-3 col-lg-2 col-md-3 col-sm-4 gap-sm-3 gap-md-2 col-4 mt-4 mt-lg-0 ">
+                <img class="img-fluid" src="{{book.img.url}}" alt="">
+                <div class="text-side">
+                    <h5 class="price">${{book.price}}</h5>
+                    <h5 class="name">
+                        {{book.title}}
+                    </h5>
+                    <div class="btns d-flex flex-column align-items-start gap-2 justify-content-start">
+                        <a href="{% url 'order' book_id=book.id %}" class="buy-btn">Place Order!</i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-12 d-flex flex-row mt-5 justify-content-center align-items-center">
+            <a href="{% url 'books' %}" class="primary-btn">Shop More</a>
+        </div>
+    </div>
+</div>
+
+<div class="audio-player">
+    <div id="hide-show" class="hide-show-btn">
+        <i class="fa-solid fa-eye-slash"></i>
+    </div>
+    <span class="name">
+        Ayat Ul Kursi
+    </span>
+    <audio id="my-audio-player" controls>
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+
+
+
+<script id="handle-audio-player">
+
+    let audioHideShowBtn = document.getElementById('hide-show');
+    let audioPlayer = document.querySelector('.audio-player');
+    let showing = true;
+
+    audioHideShowBtn.addEventListener("click", e => {
+        if (showing === true) {
+            e.preventDefault();
+            audioPlayer.style.bottom = '-80px';
+            audioHideShowBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+            showing = false;
+        } else if(showing === false) {
+            audioPlayer.style.bottom = '0px';
+            audioHideShowBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+            showing = true;
+        }
+    });
+
+    let allAudios = document.querySelectorAll('.audio');
+
+    allAudios.forEach(audio => {
+        audio.addEventListener("click", async e => {
+
+            const response = await fetch(`{% url 'get-audio' %}?audio_id=${audio.id}`, {
+                method:'GET',
+                headers: {
+                    'Content-Type':'application/json'
+                }
+            });
+
+            if (response.status === 200 ) {
+                const data = await response.json();
+                audioPlayer.querySelector('.name').innerText = data.audio.title;
+                const audioUrl = `${window.location.origin}/media/${data.audio.audio_file}`;
+                document.getElementById('my-audio-player').src = audioUrl;
+
+                document.getElementById('my-audio-player').load()
+                document.getElementById('my-audio-player').play()
+            }
+        })
+    })
+
+</script>
+{% endblock %}
+

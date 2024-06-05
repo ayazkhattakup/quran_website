@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container d-flex align-items-center justify-content-around donate-wrapper">
+    <div class="row w-100 align-items-center justify-content-between d-flex">
+        <div class="col-lg-5 d-flex justify-content-center flex-column align-items-center gap-5 col-md-6 img-side">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <h2 class="primary-heading">
+                Donate Now!
+            </h2>
+            <p class="donate-text text-center">
+                Donate to help us spread the holy message of the Qur'an to more people and participate in the great rewards on the Day of Judgement!
+            </p>
+        </div>
+        <div class="col-lg-5 d-flex justify-content-center flex-column gap-5 col-md-6 btn-side">
+            <div id="paypal-button-container"></div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://www.paypal.com/sdk/js?client-id={{paypal_client_id}}"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '10.00'
+                    },
+                    description: 'Your item description'
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href = '/payment/success/';
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
+
+{% endblock %}

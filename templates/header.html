@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="header-wrapper">
+    <div class="container">
+    
+        <div class="header d-flex flex-row justify-content-around row">
+            <div class="text-side d-flex flex-column col-lg-5 col-md-12 col-sm-12 col-12">
+                <span class="heading-p-1">
+                    LISTEN AND 
+                </span>
+                <span class="heading-p-2">
+                    LEARN FOR FREE
+                </span>
+                <span class="desc">
+                    Listen to Hundreds of Different Reciters from around the Globe. 
+                    <br>
+                    Donate and Help us Grow!
+                    <br>
+                    Purchase Your Favorite Islamic Books From Our Site Today!
+                </span>
+                <div class="btns d-flex flex-wrap gap-3 mt-4">
+                    <a href="{% url 'surahs' %}" class="primary-btn">Start Listening</a>
+                    <a href="{% url 'donate' %}" class="secondary-btn">Donate Now</a>
+                </div>
+            </div>
+            <div class="img-side col-lg-5 d-md-none d-lg-flex d-none">
+                <img src="{% static 'images/headerImg.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
