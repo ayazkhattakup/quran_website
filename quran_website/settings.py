@@ -9,7 +9,7 @@ DEBUG = True
 
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID', default='default_value')
 
-ALLOWED_HOSTS = ['51.20.1.154','localhost']
+ALLOWED_HOSTS = ['http://51.20.1.154','localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
