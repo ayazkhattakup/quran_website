@@ -9,7 +9,7 @@ DEBUG = True
 
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID', default='default_value')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['51.20.1.154','localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -76,7 +76,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://8afe-2401-ba80-a11f-539c-c5a4-32cc-541b-7b70.ngrok-free.app',
+    ''
 ]
 
 TIME_ZONE = 'UTC'
