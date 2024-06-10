@@ -9,6 +9,21 @@
 
 
 <div class="container home-container">
+
+    <div class="row hero-1">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center gap-1">
+            <h1 class="primary-heading">
+                <i class="fa-solid fa]-headphones"></i> About us!
+            </h1>
+            <span class="description">
+                Noor Ul Quraan is(The Light of Qur'an) is an amazing site, that lets you listen to your favourite Reciters and Scholars from around the World, without any charges or anything. You can listen to 100+ different <a href="{% url 'verses' %}">Qur'an Verses</a> and <a href="{% url 'surahs' %}">Chapters</a> in beautiful voices of <a href="{% url 'reciters' %}">10+ famous reciters</a> from around the globe. <br><br>
+                Additionally, you can find few of the best Islamic books, in your prefered language, delivered directly to you. All you have to do is to search for your favorite book and place an order. And we'll make sure that you get your desired book, in the best possible time. You can <a href="{% url 'books' %}">Shop Our Books Here</a> <br><br>
+            </span>
+        </div>
+        <div class="col-12 d-flex flex-row mt-5 justify-content-center align-items-center">
+            <a href="{% url 'reciters' %}" class="primary-btn">Learn More</a>
+        </div>
+    </div>
     <div class="row hero-1">
         <div class="col-12 d-flex flex-column justify-content-center align-items-center text-center gap-1">
             <h1 class="primary-heading">
@@ -112,6 +127,24 @@
             <a href="{% url 'books' %}" class="primary-btn">Shop More</a>
         </div>
     </div>
+    <div class="container d-flex align-items-center justify-content-around donate-wrapper">
+        <div class="row w-100 align-items-center justify-content-between d-flex">
+            <div class="col-lg-5 d-flex justify-content-center flex-column align-items-center gap-5 col-md-6 img-side">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <h2 class="primary-heading">
+                    Donate Now!
+                </h2>
+                <p class="donate-text text-center">
+                    Donate to help us spread the holy message of the Qur'an to more people and participate in the great rewards on the Day of Judgement!
+                </p>
+            </div>
+            <div class="col-lg-5 d-flex justify-content-center flex-column gap-5 col-md-6 btn-side">
+                <div id="paypal-button-container"></div>
+            </div>
+        </div>
+    </div>
+    
+    
 </div>
 
 <div class="audio-player">
@@ -173,5 +206,29 @@
     })
 
 </script>
+
+
+    
+<script src="https://www.paypal.com/sdk/js?client-id={{paypal_client_id}}"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '10.00'
+                    },
+                    description: 'Your item description'
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                window.location.href = '/payment/success/';
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
+
 {% endblock %}
 

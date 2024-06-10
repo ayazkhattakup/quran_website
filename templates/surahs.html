@@ -14,7 +14,7 @@
 </div>
 
 <div class="container audios-wrapper">
-    <form id="filterForm" method="get" class="row d-flex justify-content-start flex-row mb-2" action="{% url 'surahs' %}">
+    <form id="filterForm" method="get" class="row d-flex flex-md-row justify-content-start flex-column mb-2" action="{% url 'surahs' %}">
         {% if not gender or gender == 'all' %}
         <div class="input col-1">
             <input checked type="radio" name="classi" id="all" value="all">

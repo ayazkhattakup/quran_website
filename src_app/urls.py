@@ -17,4 +17,5 @@ urlpatterns = [
     path('reciter/', views.reciter, name='reciter'),
     path('reciters/', views.reciters, name='reciters'),
     path('search/', views.search, name='search'),
+    path('about-us/', views.about_us, name='about'),
 ]

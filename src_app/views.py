@@ -18,6 +18,7 @@ def home(request):
     surahs = Audio.objects.filter(kind='surah')[:6]
     reciters = Reciter.objects.all()[0:6]
     books = Book.objects.all()[0:6]
+    context['paypal_client_id'] = settings.PAYPAL_CLIENT_ID
     context['verses'] = verses
     context['surahs'] = surahs
     context['books'] = books
@@ -274,6 +275,9 @@ def search(request):
     else:
         context['message'] = 'Search Query was not provided'
 
-
-
     return render(request, 'search.html', context)
+
+
+def about_us(request):
+
+    return render(request, 'about.html')

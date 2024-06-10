@@ -5,7 +5,7 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5vo7v7*)#+ke+i8nh#j@ak-7*ck^*+mahib4!o_wirbixl$s2n'
-DEBUG = False
+DEBUG = True
 
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID', default='default_value')
 
@@ -51,25 +51,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'quran_website.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'NoorDB',
-        'USER': 'ayaz',
-        'PASSWORD': 'nooralquran:8000@localhost:8000',
-        'HOST': '51.20.1.154',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'noordb',
+#         'USER': 'ayaz',
+#         'PASSWORD': 'nooralquran:8000@localhost:8000',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {

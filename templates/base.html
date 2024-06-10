@@ -1,45 +1,61 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <link rel="manifest" href="{% static 'manifest.json' %}">
-    <link rel="icon" href="{% static 'images/logo192.png' %}" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="manifest" href="{% static 'manifest.json' %}" />
+    <link
+      rel="icon"
+      href="{% static 'images/logo192.png' %}"
+      type="image/x-icon"
+    />
     <title>Noor Al-Quraan</title>
-</head>
-<body>
-    
+  </head>
+  <body>
+    <div class="loader-wrapper">
+      <div class="loader d-flex flex-row gap-1">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
 
-    {% include 'navbar.html' %}
-    {% block content %}
-
-    {% endblock %}
-
-    {% include 'footer.html' %}
+    {% include 'navbar.html' %} {% block content %} {% endblock %} {% include
+    'footer.html' %}
     <span class="download-btn" id="install-id">
-        <i class="fa-solid fa-download"></i>
+      <i class="fa-solid fa-download"></i>
     </span>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
-    <script src="https://kit.fontawesome.com/18ee09c425.js" crossorigin="anonymous"></script>
-
+    <script
+      src="https://kit.fontawesome.com/18ee09c425.js"
+      crossorigin="anonymous"
+    ></script>
 
     <script>
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        deferredPrompt = event;
+      });
 
-        window.addEventListener("beforeinstallprompt", event => {
-            event.preventDefault();
-            deferredPrompt = event;
-        })
+      let installBtn = document.getElementById("install-id");
 
-        let installBtn = document.getElementById('install-id');
-
-        installBtn.addEventListener("click", event => {
-            deferredPrompt.prompt();
-        })
-
+      installBtn.addEventListener("click", (event) => {
+        deferredPrompt.prompt();
+      });
     </script>
 
-</body>
+
+    <script id="for-loader">
+        let loader = document.querySelector('.loader-wrapper');
+
+        window.addEventListener("load", e => {
+            loader.style.display = 'none';
+        })
+    </script>
+
+  </body>
 </html>

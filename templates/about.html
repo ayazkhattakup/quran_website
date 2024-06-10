@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+
+
+
+{% block content %}
+{% load static %}
+
+
+
+<div class="container">
+    <div class="row hero-1">
+        <div class="col-12 d-flex flex-column justify-content-center align-items-center gap-1">
+            <h1 class="primary-heading">
+                <i class="fa-solid fa]-headphones"></i> About us!
+            </h1>
+            <span class="description">
+                Noor Ul Quraan is(The Light of Qur'an) is an amazing site, that lets you listen to your favourite Reciters and Scholars from around the World, without any charges or anything. You can listen to 100+ different Qur'an Verses and Chapters in beautiful voices of 10+ famous reciters from around the globe. <br><br>
+                Additionally, you can find few of the best Islamic books, in your prefered language, delivered directly to you. All you have to do is to search for your favorite book and place an order. And we'll make sure that you get your desired book, in the best possible time. You can <a href="{% url 'books' %}">Shop Our Books Here</a> <br><br>
+            </span>
+        </div>
+        <div class="col-12 d-flex flex-row mt-5 justify-content-center align-items-center">
+            <a href="{% url 'reciters' %}" class="primary-btn">Learn More</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -14,7 +14,7 @@
 </div>
 
 <div class="container audios-wrapper">
-    <form id="filterForm" method="get" class="row d-flex justify-content-start flex-row mb-2" action="{% url 'search' %}">
+    <form id="filterForm" method="get" class="row d-flex justify-content-start flex-md-row flex-column mb-2" action="{% url 'search' %}">
         <input type="text" value="{{query}}" name="query" hidden>
         {% if not gender or gender == 'all' %}
         <div class="input col-1">
